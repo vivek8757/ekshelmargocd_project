@@ -1,0 +1,37 @@
+# Default values for backend.
+replicaCount: 2
+
+image:
+  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/eks-demo-backend
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+# IAM Role for Service Account (IRSA) for S3 upload
+serviceAccount:
+  create: true
+  name: "backend-s3-sa"
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/eks-demo-backend-s3-role"
+
+# Application Config (Can be overridden during deploy)
+config:
+  s3BucketName: "eks-demo-s3-bucket-unique-name"
+  awsRegion: "us-east-1"
+  # Set mongoDbUri in a secret or inject from environment, here we provide placeholder
+  mongoDbUri: "mongodb+srv://user:pass@cluster0.mongodb.net/eks-demo?retryWrites=true&w=majority"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

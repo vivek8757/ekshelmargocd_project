@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f1015 0%, #151824 100%);
+  --card-bg: rgba(22, 25, 41, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+  
+  --primary: #8b5cf6;
+  --primary-hover: #a78bfa;
+  --secondary: #06b6d4;
+  --secondary-hover: #22d3ee;
+  
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-inverse: #0f172a;
+  
+  --success: #10b981;
+  --danger: #ef4444;
+  
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0;
+  color: #ffffff;
+}
+
+input, button {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
