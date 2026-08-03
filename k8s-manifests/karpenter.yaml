@@ -32,7 +32,7 @@ metadata:
   name: default
 spec:
   amiFamily: AL2 # Amazon Linux 2
-  role: KarpenterNodeRole-eks-demo-cluster # IAM Role created in Terraform for nodes
+  instanceProfile: KarpenterNodeInstanceProfile-eks-demo-cluster # Matches Terraform-created instance profile
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: eks-demo-cluster
