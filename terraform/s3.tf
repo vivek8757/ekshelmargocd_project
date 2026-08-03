@@ -33,7 +33,7 @@ resource "aws_iam_policy" "backend_s3" {
           "s3:DeleteObject",
           "s3:ListBucket"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           aws_s3_bucket.uploads.arn,
           "${aws_s3_bucket.uploads.arn}/*"

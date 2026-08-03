@@ -67,3 +67,34 @@ output "external_dns_role_arn" {
   description = "ExternalDNS IAM Role ARN for EKS service account annotation"
   value       = aws_iam_role.external_dns.arn
 }
+resource "aws_iam_role" "cert_manager" {
+  name = "${var.cluster_name}-cert-manager-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Effect = "Allow"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.eks.arn
+        }
+        Condition = {
+          StringEquals = {
+            "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub" = "system:serviceaccount:cert-manager:cert-manager"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cert_manager" {
+  policy_arn = aws_iam_policy.external_dns.arn
+  role       = aws_iam_role.cert_manager.name
+}
+
+output "cert_manager_role_arn" {
+  description = "ARN of the IAM Role for cert-manager service account"
+  value       = aws_iam_role.cert_manager.arn
+}

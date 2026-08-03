@@ -49,7 +49,7 @@ resource "aws_apigatewayv2_integration" "eks_integration" {
   # Placeholder URI: usually http://<private-nlb-dns-name>
   # In actual deployment, this points to the private DNS of the NLB created by Nginx Ingress
   integration_uri = "http://internal-eks-demo-nlb.us-east-1.elb.amazonaws.com"
-  
+
   description = "Integration forwarding all traffic to private EKS Ingress Controller"
 }
 

@@ -156,6 +156,10 @@ resource "aws_cloudwatch_event_target" "rebalance" {
   target_id = "SendToSQS"
   arn       = aws_sqs_queue.karpenter.arn
 }
+resource "aws_iam_instance_profile" "karpenter_node" {
+  name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
+  role = aws_iam_role.karpenter_node.name
+}
 
 # Karpenter Helm Release
 resource "helm_release" "karpenter" {
@@ -199,6 +203,7 @@ resource "helm_release" "karpenter" {
   }
 
   depends_on = [
-    aws_eks_node_group.system
+    aws_eks_node_group.system,
+    aws_iam_instance_profile.karpenter_node
   ]
 }

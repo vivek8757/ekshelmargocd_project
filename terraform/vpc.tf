@@ -9,7 +9,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name                                      = "${var.cluster_name}-vpc"
+    Name                                        = "${var.cluster_name}-vpc"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
@@ -23,9 +23,9 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                      = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[count.index]}"
+    Name                                        = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[count.index]}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                  = "1"
+    "kubernetes.io/role/elb"                    = "1"
   }
 }
 
@@ -37,11 +37,11 @@ resource "aws_subnet" "private" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = {
-    Name                                      = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[count.index]}"
+    Name                                        = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[count.index]}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"         = "1"
+    "kubernetes.io/role/internal-elb"           = "1"
     # Karpenter subnet discovery tag
-    "karpenter.sh/discovery"                  = var.cluster_name
+    "karpenter.sh/discovery" = var.cluster_name
   }
 }
 
@@ -145,6 +145,6 @@ resource "aws_vpc_peering_connection" "atlas" {
 resource "aws_route" "peering_route" {
   count                     = var.enable_vpc_peering ? 1 : 0
   route_table_id            = aws_route_table.private.id
-  destination_cidr_block     = var.mongodb_atlas_vpc_cidr
+  destination_cidr_block    = var.mongodb_atlas_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.atlas[0].id
 }
