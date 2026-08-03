@@ -42,7 +42,8 @@ resource "aws_security_group" "cluster" {
   }
 
   tags = {
-    Name = "${var.cluster_name}-sg"
+    Name                     = "${var.cluster_name}-sg"
+    "karpenter.sh/discovery" = var.cluster_name
   }
 }
 

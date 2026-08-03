@@ -91,6 +91,7 @@ resource "aws_iam_policy" "karpenter_controller" {
           "ec2:DescribeInstanceTypes",
           "ec2:DescribeInstanceTypeOfferings",
           "ec2:DescribeAvailabilityZones",
+          "eks:DescribeCluster",
           "ec2:DescribeSpotPriceHistory",
           "ec2:DescribeImages"
         ]
@@ -185,6 +186,10 @@ resource "helm_release" "karpenter" {
   set {
     name  = "settings.clusterEndpoint"
     value = aws_eks_cluster.main.endpoint
+  }
+  set {
+    name  = "settings.eksControlPlane"
+    value = "true"
   }
 
   set {
