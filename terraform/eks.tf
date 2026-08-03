@@ -33,6 +33,13 @@ resource "aws_security_group" "cluster" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    description = "Allow all traffic between nodes and control plane sharing this SG"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
 
   tags = {
     Name = "${var.cluster_name}-sg"
@@ -43,7 +50,7 @@ resource "aws_security_group" "cluster" {
 resource "aws_eks_cluster" "main" {
   name     = var.cluster_name
   role_arn = aws_iam_role.cluster.arn
-  version  = "1.30"
+  version  = "1.34"
 
   vpc_config {
     security_group_ids      = [aws_security_group.cluster.id]

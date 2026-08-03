@@ -76,6 +76,12 @@ resource "aws_iam_policy" "karpenter_controller" {
           "ec2:RunInstances",
           "ec2:CreateTags",
           "iam:PassRole",
+          "iam:CreateInstanceProfile",
+          "iam:TagInstanceProfile",
+          "iam:AddRoleToInstanceProfile",
+          "iam:RemoveRoleFromInstanceProfile",
+          "iam:DeleteInstanceProfile",
+          "iam:GetInstanceProfile",
           "ec2:TerminateInstances",
           "ec2:DeleteLaunchTemplate",
           "ec2:DescribeLaunchTemplates",
@@ -169,15 +175,15 @@ resource "helm_release" "karpenter" {
   name       = "karpenter"
   repository = "oci://public.ecr.aws/karpenter"
   chart      = "karpenter"
-  version    = "0.32.1"
+  version    = "1.12.1"
 
   set {
-    name  = "settings.aws.clusterName"
+    name  = "settings.clusterName"
     value = var.cluster_name
   }
 
   set {
-    name  = "settings.aws.clusterEndpoint"
+    name  = "settings.clusterEndpoint"
     value = aws_eks_cluster.main.endpoint
   }
 
@@ -187,19 +193,8 @@ resource "helm_release" "karpenter" {
   }
 
   set {
-    name  = "settings.aws.defaultInstanceProfile"
-    value = "KarpenterNodeInstanceProfile-${var.cluster_name}"
-  }
-
-  set {
-    name  = "settings.aws.interruptionQueueName"
+    name  = "settings.interruptionQueue"
     value = aws_sqs_queue.karpenter.name
-  }
-
-  # Karpenter v0.32+ CRDs can be installed automatically
-  set {
-    name  = "installCRDs"
-    value = "true"
   }
 
   depends_on = [

@@ -1,4 +1,4 @@
-apiVersion: karpenter.sh/v1beta1
+apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
   name: default
@@ -19,20 +19,24 @@ spec:
           operator: Gt
           values: ["2"]
       nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
         name: default
   limits:
     cpu: 1000
   disruption:
-    consolidationPolicy: WhenUnderutilized
-    expireAfter: 720h # 30 days
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 720h
 ---
-apiVersion: karpenter.k8s.aws/v1beta1
+apiVersion: karpenter.k8s.aws/v1
 kind: EC2NodeClass
 metadata:
   name: default
 spec:
-  amiFamily: AL2 # Amazon Linux 2
-  instanceProfile: KarpenterNodeInstanceProfile-eks-demo-cluster # Matches Terraform-created instance profile
+  amiFamily: AL2023
+  amiSelectorTerms:
+    - alias: al2023@latest
+  role: KarpenterNodeRole-eks-demo-cluster
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: eks-demo-cluster
