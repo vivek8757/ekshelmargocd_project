@@ -6,7 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/hostname: demo.eks-task.com
+    external-dns.alpha.kubernetes.io/hostname: demoeks.vivekkumarsingh.online
     # Nginx ingress controller rewrite rules (optional, if we want to forward subpaths)
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     # Ensure client payload limits are high enough for S3 file uploads
@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - demo.eks-task.com
-      secretName: demo-tls-secret
+        - demoeks.vivekkumarsingh.online
+      secretName: demoeks-tls-secret
   rules:
-    - host: demo.eks-task.com
+    - host: demoeks.vivekkumarsingh.online
       http:
         paths:
           # Route API requests to backend service

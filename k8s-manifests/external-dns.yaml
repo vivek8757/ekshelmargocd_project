@@ -5,6 +5,7 @@ metadata:
   namespace: kube-system
   annotations:
     # IAM Role created via Terraform with Route53 access
+    # TODO: replace with real ARN from `terraform output external_dns_role_arn`
     eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/eks-demo-external-dns-role
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -58,7 +59,7 @@ spec:
           args:
             - --source=service
             - --source=ingress
-            - --domain-filter=demo.eks-task.com # Will filter zone by domain name
+            - --domain-filter=demoeks.vivekkumarsingh.online # Will filter zone by domain name
             - --provider=aws
             - --policy=upsert-only # Prevents ExternalDNS from deleting existing records
             - --aws-zone-type=public

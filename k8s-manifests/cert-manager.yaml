@@ -5,12 +5,11 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: admin@demo.eks-task.com
+    email: admin@vivekkumarsingh.online
     privateKeySecretRef:
       name: letsencrypt-prod-private-key
     solvers:
       - dns01:
           route53:
             region: us-east-1
-            # Cert-Manager pod inherits the IAM Role with Route53 access via its service account
-            hostedZoneID: Z0123456789ABCDEF # Will be replaced with actual Route53 Hosted Zone ID
+            hostedZoneID: Z06731133K03VS2ESDAI7

@@ -17,9 +17,15 @@ variable "vpc_cidr" {
 }
 
 variable "domain_name" {
-  description = "Custom domain name for the EKS application"
+  description = "Root domain name (existing Route53 hosted zone)"
   type        = string
-  default     = "demo.eks-task.com"
+  default     = "vivekkumarsingh.online"
+}
+
+variable "subdomain" {
+  description = "Subdomain used for the EKS demo application"
+  type        = string
+  default     = "demoeks.vivekkumarsingh.online"
 }
 
 variable "enable_vpc_peering" {

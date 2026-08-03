@@ -1,7 +1,6 @@
-# Route53 Hosted Zone for EKS task
-resource "aws_route53_zone" "primary" {
-  name    = var.domain_name
-  comment = "Primary DNS zone for EKS Cluster microservices"
+# Route53 Hosted Zone for EKS task (existing zone, referenced not created)
+data "aws_route53_zone" "primary" {
+  name = var.domain_name
 }
 
 # ExternalDNS IAM Policy for Route53 management
@@ -15,7 +14,7 @@ resource "aws_iam_policy" "external_dns" {
       {
         Effect   = "Allow"
         Action   = "route53:ChangeResourceRecordSets"
-        Resource = "arn:aws:route53:::hostedzone/${aws_route53_zone.primary.zone_id}"
+        Resource = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zone_id}"
       },
       {
         Effect = "Allow"
@@ -60,13 +59,15 @@ resource "aws_iam_role_policy_attachment" "external_dns" {
 
 output "route53_zone_id" {
   description = "Route53 Hosted Zone ID"
-  value       = aws_route53_zone.primary.zone_id
+  value       = data.aws_route53_zone.primary.zone_id
 }
 
 output "external_dns_role_arn" {
   description = "ExternalDNS IAM Role ARN for EKS service account annotation"
   value       = aws_iam_role.external_dns.arn
 }
+
+# IAM Role for cert-manager Service Account (IRSA)
 resource "aws_iam_role" "cert_manager" {
   name = "${var.cluster_name}-cert-manager-role"
 
