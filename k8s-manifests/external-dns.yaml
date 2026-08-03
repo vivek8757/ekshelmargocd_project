@@ -6,7 +6,7 @@ metadata:
   annotations:
     # IAM Role created via Terraform with Route53 access
     # TODO: replace with real ARN from `terraform output external_dns_role_arn`
-    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/eks-demo-external-dns-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::096610237622:role/eks-demo-cluster-external-dns-role
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

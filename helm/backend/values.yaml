@@ -15,11 +15,11 @@ serviceAccount:
   create: true
   name: "backend-s3-sa"
   annotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/eks-demo-backend-s3-role"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::096610237622:role/eks-demo-cluster-backend-s3-role"
 
 # Application Config (Can be overridden during deploy)
 config:
-  s3BucketName: "eks-demo-s3-bucket-unique-name"
+  s3BucketName: "eks-demo-uploads-20260803105242557900000001"
   awsRegion: "us-east-1"
   # Set mongoDbUri in a secret or inject from environment, here we provide placeholder
   mongoDbUri: "mongodb+srv://user:pass@cluster0.mongodb.net/eks-demo?retryWrites=true&w=majority"
