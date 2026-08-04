@@ -12,15 +12,19 @@ resource "aws_iam_policy" "external_dns" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = "route53:ChangeResourceRecordSets"
+        Effect = "Allow"
+        Action = [
+          "route53:ChangeResourceRecordSets",
+          "route53:GetChange"
+        ]
         Resource = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zone_id}"
       },
       {
         Effect = "Allow"
         Action = [
           "route53:ListHostedZones",
-          "route53:ListResourceRecordSets"
+          "route53:ListResourceRecordSets",
+          "route53:GetChange"
         ]
         Resource = "*"
       }
