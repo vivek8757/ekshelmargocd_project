@@ -24,7 +24,8 @@ resource "aws_iam_policy" "external_dns" {
         Action = [
           "route53:ListHostedZones",
           "route53:ListResourceRecordSets",
-          "route53:GetChange"
+          "route53:GetChange",
+          "route53:GetHostedZone"
         ]
         Resource = "*"
       }
