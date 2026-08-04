@@ -59,12 +59,12 @@ spec:
           args:
             - --source=service
             - --source=ingress
-            - --domain-filter=demoeks.vivekkumarsingh.online # Will filter zone by domain name
+            - --domain-filter=vivekkumarsingh.online
             - --provider=aws
-            - --policy=upsert-only # Prevents ExternalDNS from deleting existing records
-            - --aws-zone-type=public
+            - --policy=upsert-only
             - --registry=txt
             - --txt-owner-id=eks-demo-cluster-owner
+            - --zone-id-filter=Z06731133K03VS2ESDAI7
           resources:
             limits:
               cpu: 50m
