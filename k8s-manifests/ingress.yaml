@@ -25,7 +25,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: backend-backend
+                name: backend
                 port:
                   number: 5000
           # Route all other traffic to React frontend
@@ -33,6 +33,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-frontend
+                name: frontend
                 port:
                   number: 80
