@@ -2,7 +2,7 @@
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/eks-demo-backend
+  repository: 096610237622.dkr.ecr.us-east-1.amazonaws.com/eks-demo-backend
   pullPolicy: IfNotPresent
   tag: "latest"
 
