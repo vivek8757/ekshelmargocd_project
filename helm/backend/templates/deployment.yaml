@@ -33,7 +33,7 @@ spec:
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "backend.fullname" . }}-secret
+                  name: docdb-credentials
                   key: mongodb-uri
           livenessProbe:
             httpGet:
@@ -47,8 +47,17 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
+          volumeMounts:
+            - name: docdb-ca-bundle
+              mountPath: /etc/ssl/certs/global-bundle.pem
+              subPath: global-bundle.pem
+              readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: docdb-ca-bundle
+          secret:
+            secretName: docdb-credentials
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
