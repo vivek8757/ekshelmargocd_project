@@ -10,3 +10,4 @@
 # macOS
 .DS_Store
 terraform.tfvars
+global-bundle.pem
