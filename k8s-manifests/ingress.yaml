@@ -4,14 +4,10 @@ metadata:
   name: eks-demo-ingress
   namespace: default
   annotations:
-    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     external-dns.alpha.kubernetes.io/hostname: demoeks.vivekkumarsingh.online
-    # Nginx ingress controller rewrite rules (optional, if we want to forward subpaths)
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    # Ensure client payload limits are high enough for S3 file uploads
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
 spec:
+  ingressClassName: kong
   tls:
     - hosts:
         - demoeks.vivekkumarsingh.online
@@ -20,7 +16,6 @@ spec:
     - host: demoeks.vivekkumarsingh.online
       http:
         paths:
-          # Route API requests to backend service
           - path: /api
             pathType: Prefix
             backend:
@@ -28,7 +23,6 @@ spec:
                 name: backend
                 port:
                   number: 5000
-          # Route all other traffic to React frontend
           - path: /
             pathType: Prefix
             backend:
