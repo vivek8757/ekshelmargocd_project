@@ -90,14 +90,16 @@ resource "aws_route_table" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat.id
-  }
+  
 
   tags = {
     Name = "${var.cluster_name}-private-rt"
   }
+}
+resource "aws_route" "private_nat" {
+  route_table_id         = aws_route_table.private.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id          = aws_nat_gateway.nat.id
 }
 
 # Route Table Associations
@@ -128,23 +130,7 @@ resource "aws_vpc_endpoint" "s3" {
 
 # --- VPC PEERING TO MONGODB ATLAS ---
 # Requests connection to MongoDB Atlas cluster VPC
-resource "aws_vpc_peering_connection" "atlas" {
-  count         = var.enable_vpc_peering ? 1 : 0
-  peer_owner_id = var.mongodb_atlas_aws_account_id
-  peer_vpc_id   = var.mongodb_atlas_vpc_id
-  vpc_id        = aws_vpc.main.id
-  peer_region   = lower(replace(var.mongodb_atlas_region, "_", "-"))
-  auto_accept   = false # AWS side cannot auto-accept across accounts, Atlas side accepts it
 
-  tags = {
-    Name = "${var.cluster_name}-peering-to-atlas"
-  }
-}
 
 # Route EKS Private Subnet traffic destined for MongoDB Atlas over Peering Connection
-resource "aws_route" "peering_route" {
-  count                     = var.enable_vpc_peering ? 1 : 0
-  route_table_id            = aws_route_table.private.id
-  destination_cidr_block    = var.mongodb_atlas_vpc_cidr
-  vpc_peering_connection_id = aws_vpc_peering_connection.atlas[0].id
-}
+
