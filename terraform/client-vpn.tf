@@ -30,6 +30,13 @@ resource "aws_security_group" "client_vpn" {
     protocol    = "-1"
     cidr_blocks = [var.vpc_cidr]
   }
+  ingress {
+    description = "Allow inbound from VPN client CIDR itself"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.vpn_client_cidr]
+  }
 
   egress {
     from_port   = 0
@@ -61,6 +68,7 @@ resource "aws_ec2_client_vpn_endpoint" "main" {
   vpc_id                 = aws_vpc.main.id
   security_group_ids     = [aws_security_group.client_vpn.id]
   transport_protocol      = "tcp"
+  dns_servers             = ["10.0.0.2"]
 
   authentication_options {
     type                       = "certificate-authentication"
