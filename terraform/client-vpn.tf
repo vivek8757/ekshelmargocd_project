@@ -60,6 +60,7 @@ resource "aws_ec2_client_vpn_endpoint" "main" {
   split_tunnel           = true
   vpc_id                 = aws_vpc.main.id
   security_group_ids     = [aws_security_group.client_vpn.id]
+  transport_protocol      = "tcp"
 
   authentication_options {
     type                       = "certificate-authentication"
