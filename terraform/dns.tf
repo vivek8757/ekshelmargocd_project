@@ -49,7 +49,7 @@ resource "aws_iam_role" "external_dns" {
         Condition = {
           StringEquals = {
             # Matches the external-dns service account created in the kube-system namespace
-            "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub" = "system:serviceaccount:kube-system:external-dns"
+            "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub" = "system:serviceaccount:external-dns:external-dns"
           }
         }
       }

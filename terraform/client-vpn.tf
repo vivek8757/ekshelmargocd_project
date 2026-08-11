@@ -67,8 +67,8 @@ resource "aws_ec2_client_vpn_endpoint" "main" {
   split_tunnel           = true
   vpc_id                 = aws_vpc.main.id
   security_group_ids     = [aws_security_group.client_vpn.id]
-  transport_protocol      = "tcp"
-  dns_servers             = ["10.0.0.2"]
+  transport_protocol     = "tcp"
+  dns_servers            = ["10.0.0.2"]
 
   authentication_options {
     type                       = "certificate-authentication"
@@ -103,7 +103,7 @@ resource "aws_ec2_client_vpn_route" "private" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.main.id
   destination_cidr_block = var.vpc_cidr
   target_vpc_subnet_id   = aws_subnet.private[count.index].id
-   description             = "Default Route"
+  description            = "Default Route"
 
   depends_on = [aws_ec2_client_vpn_network_association.private]
 }
