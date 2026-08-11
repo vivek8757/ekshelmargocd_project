@@ -40,6 +40,13 @@ resource "aws_security_group" "cluster" {
     protocol    = "-1"
     self        = true
   }
+   ingress {
+    description = "Allow EKS API access from Client VPN"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpn_client_cidr]
+  }
 
   tags = {
     Name                     = "${var.cluster_name}-sg"
@@ -57,14 +64,22 @@ resource "aws_eks_cluster" "main" {
     security_group_ids      = [aws_security_group.cluster.id]
     subnet_ids              = concat(aws_subnet.public[*].id, aws_subnet.private[*].id)
     endpoint_private_access = true
-    endpoint_public_access  = true # Set to true for CLI administration; in prod restrict CIDRs
+    endpoint_public_access  = false # Set to true for CLI administration; in prod restrict CIDRs
   }
 
   depends_on = [
     aws_iam_role_policy_attachment.cluster_policy
   ]
 }
-
+resource "aws_security_group_rule" "cluster_sg_vpn_access" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_eks_cluster.main.vpc_config[0].cluster_security_group_id
+  cidr_blocks       = [var.vpc_cidr]
+  description       = "Allow EKS API access from Client VPN"
+}
 # IAM Role for Managed Node Group
 resource "aws_iam_role" "node" {
   name = "${var.cluster_name}-node-role"
