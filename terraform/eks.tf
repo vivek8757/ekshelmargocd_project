@@ -64,7 +64,7 @@ resource "aws_eks_cluster" "main" {
     security_group_ids      = [aws_security_group.cluster.id]
     subnet_ids              = concat(aws_subnet.public[*].id, aws_subnet.private[*].id)
     endpoint_private_access = true
-    endpoint_public_access  = true # Set to true for CLI administration; in prod restrict CIDRs
+    endpoint_public_access  = false # Set to true for CLI administration; in prod restrict CIDRs
   }
 
   depends_on = [
