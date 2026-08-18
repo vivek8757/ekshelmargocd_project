@@ -19,7 +19,7 @@ serviceAccount:
 
 # Application Config (Can be overridden during deploy)
 config:
-  s3BucketName: "eks-demo-uploads-20260810053248043300000001"
+  s3BucketName: "eks-demo-uploads-20260818044932043900000001"
   awsRegion: "us-east-1"
   # Set mongoDbUri in a secret or inject from environment, here we provide placeholder
   mongoDbUri: "mongodb+srv://user:pass@cluster0.mongodb.net/eks-demo?retryWrites=true&w=majority"
